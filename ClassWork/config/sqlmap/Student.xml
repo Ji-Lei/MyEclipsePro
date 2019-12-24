@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.StudentMapper">
+	<!-- 手机号列表 -->
+	<resultMap type="Phone" id="getPhone">
+		<id property="pno" column="pno" />
+		<result property="cno" column="cno" />
+		<result property="phone" column="phone" />
+	</resultMap>
+	
+	<resultMap type="Student" id="stuMap">
+		<id property="cno" column="cno" />
+		<result property="name" column="name" />
+		<result property="classno" column="classno" />
+		<result property="sex" column="sex" />
+		
+		<association property="phone1" javaType="Phone" resultMap="getPhone"/>
+		<!-- 也可以像下面这样直接写里面，不利于代码复用 -->
+		<association property="class1" javaType="Class">
+			<id property="id" column="classno" />
+			<result property="classname" column="classname" />
+		</association>
+		<!-- 通过collection获取学生手机号列表 ，直接引用外部resultMap，有利用代码复用-->
+		<collection property="phoneList" ofType="Phone" resultMap="getPhone"/>
+		
+	</resultMap>
+	
+<!-- 根据学号查询 -->
+	<!-- <select id="getStudentsByCno" resultMap="stuMap" parameterType="Integer">
+		select s.cno,s.name,s.sex,p.phone,c.classname 
+		from student s,phone p,class c 
+		where s.classno=c.classno and s.cno=p.cno and s.cno=#{cno}
+	</select> -->
+	
+	<!-- <sql id="studentsql">
+		将动态拼接写在公共sql标签里，在where标签中调用，也可以把拼接内容直接写在where中
+		<if test="cno!=null">
+			and s.cno=#{cno}
+		</if>
+	</sql> -->
+	
+	<!-- 动态sql根据学号查询和获取所有 -->
+	<select id="getStudentsByCno" resultMap="stuMap" parameterType="Integer">
+		select s.cno,s.name,s.sex,p.phone,c.classname 
+		from student s,phone p,class c 
+		where s.classno=c.classno and s.cno=p.cno 
+		<!-- 如果拼接前语句中有where可以用这个 -->
+		<if test="cno!=null">
+			and s.cno=#{cno}
+		</if>
+		<!-- 如果拼接前语句中没有where可以用这两个 -->
+		<!-- <where>
+			在此用用公共sql拼接条件
+			<include refid="studentsql" />
+		</where> -->
+		<!-- 也可以下面这种方式 -->
+		<!-- <trim prefix="where" prefixOverrides="and | or">
+			<include refid="studentsql" />
+		</trim> -->
+		<!-- 选择choose -->
+		<!-- <choose>
+		只执行一条，发现一条满足后，不继续向下执行
+			<when test="条件1">满足条件执行内容</when>
+			<when test="条件2">满足条件执行内容</when>
+			<when test="条件3">满足条件执行内容</when>
+			<when test="条件4">满足条件执行内容</when>
+		</choose> -->
+	</select>
+	<!-- 更新操作 -->
+	<!-- <parameterMap type="Student" id="updataStu">
+		<id property="cno" column="cno" />	
+		<result property="sex" column="sex" />
+		<result property="name" column="name" />
+		<result property="classno" column="classno" />
+	</parameterMap> -->
+	<update id="updataStudent" parameterType="Student">
+		update student
+		<trim prefix="set" suffixOverrides="," suffix="where student.cno=#{cno}">
+			<if test="sex != null">student.sex=#{sex},</if>
+			<if test="name != null">student.name=#{name},</if>
+			<if test="classno != null">student.classno=#{classno},</if>
+		</trim>	
+	</update>
+	
+</mapper>
