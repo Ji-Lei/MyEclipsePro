@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.mapper.UserMapper">
+	
+	<resultMap type="pojo.User" id="Users">
+		<id property="uid" column="uid"/>
+		<result property="username" column="username"/>
+		<result property="password" column="password"/>
+	</resultMap>
+	
+	<resultMap type="pojo.UsersList" id="usersList">
+		<collection property="list" ofType="pojo.User" resultMap="Users" />
+	</resultMap>
+	<!-- 查询所有用户 -->
+	<select id="getUsers" resultMap="usersList" parameterType="String">
+		select * from user
+			<trim prefix="where" prefixOverrides="and | or">
+				<if test="username != null">username=#{username}</if>
+			</trim>
+	</select>
+	<!-- 添加用户 -->
+	<insert id="addUser" parameterType="pojo.User">
+		insert into user values(#{username},#{password})
+	</insert>
+	<!-- 删除用户 -->
+	<delete id="deleteUser" parameterType="String">
+		delete from user where username=#{username}
+	</delete>
+	<!-- 修改用户 -->
+	<update id="updateUser" parameterType="pojo.User">
+		update user set password=#{password} where username=#{username}
+	</update>
+</mapper>

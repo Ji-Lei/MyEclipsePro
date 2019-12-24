@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+	var city=$('.city option:selected').val();
+	function show(){
+		var city=$('.city option:selected').val();
+		if(city=="合肥"||city=="北京")url="AirCityServlet";
+		else url="AirServlet";
+		$.get(
+			url,
+			"city="+city,
+			function(date){
+				var json=eval(date);//接收传过来的对象值
+				var air=$(".air");
+				var context="";
+				var styles="";
+				for(var i=0;i<json.length;i++){
+					if(i%2==0)styles="stylex";
+					if(i%2==1)styles="styley";
+					context=context+"<div class="+styles+">"+
+					 "<span class='style1'>"+json[i].name+"</span>"+
+					 "<span class='style2'>"+json[i].monitorTime+"</span>"+
+			         "<span class='style3'>"+json[i].pm10+"</span>"+
+			         "<span class='style4'>"+json[i].pm25+"</span>"+
+			         "<span class='style5'>"+json[i].monitoringStation+"</span>"+
+			         "</div>";
+				}
+				air.html(context);
+			},
+			"text"
+		)
+	};
+	$.get(
+			"AirServlet",
+			function(date){
+				var json=eval(date);//接收传过来的对象值
+				var air=$(".air");
+				var context="";
+				var styles="";
+				for(var i=0;i<json.length;i++){
+					if(i%2==0)styles="stylex";
+					if(i%2==1)styles="styley";
+					context=context+"<div class="+styles+">"+
+							 "<span class='style1'>"+json[i].name+"</span>"+
+							 "<span class='style2'>"+json[i].monitorTime+"</span>"+
+					         "<span class='style3'>"+json[i].pm10+"</span>"+
+					         "<span class='style4'>"+json[i].pm25+"</span>"+
+					         "<span class='style5'>"+json[i].monitoringStation+"</span>"+
+					         "</div>";
+				}
+				air.html(context);
+			},
+			"text"
+		);
+	
+</script>
+
+<style>
+.style1{
+	border-left:1px solid #000;
+	display:inline-block;
+	height:30px;
+	width:80px;
+}
+.style2{
+	border-left:1px solid #000;
+	display:inline-block;
+	height:30px;
+	width:200px;
+}
+.style3{
+	border-left:1px solid #000;
+	display:inline-block;
+	height:30px;
+	width:25px;
+}
+.style4{
+	border-left:1px solid #000;
+	display:inline-block;
+	height:30px;
+	width:25px;
+}
+.style5{
+	border-left:1px solid #000;
+	display:inline-block;
+	height:30px;
+	width:120px;
+}
+.stylex{
+	width:500px;
+	height:30px;
+	background:red;
+}
+.styley{
+	width:500px;
+	height:30px;
+	background:blue;
+}
+</style>
+
+</head>
+<body>
+<div style="float:left;margin-right:150px;">
+	<select class="city">
+		<option>全部</option>
+		<option>北京</option>
+		<option>合肥</option>
+	</select>
+	<input type="button" onclick="show()" value="提交">
+</div>
+<div>
+	<a href="addAir.html">添加空气质量信息</a>
+</div>
+
+<div class="air" style="margin-top:20px;">
+		
+</div>
+</body>
+</html>

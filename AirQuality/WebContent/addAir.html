@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="js/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+	function addAir(){
+		var district=$(".district").val();
+		var pm10=$(".pm10").val();
+		var pm25=$(".pm25").val();
+		var monitoringStation=$(".monitoringStation").val();
+		var city=$('.city option:selected').val();
+		$.get(
+			"AddAirServlet",
+			"district="+district+
+			"pm10="+pm10+
+			"pm25="+pm25+
+			"monitoringStation="+monitoringStation+
+			"city="+city,
+			function(result){
+				if(result=="true"){
+					window.location.href="index.html";
+				}
+			},
+			"text"
+		);
+		
+	}
+</script>
+
+</head>
+<body>
+	城区:<input type="text" class="district">
+	pm10:<input type="text" class="pm10">
+	pm25:<input type="text" class="pm25">
+	监测站:<input type="text" class="monitoringStation">
+	所属城市:
+	<select class="city">
+		<option>北京</option>
+		<option>合肥</option>
+	</select>
+	<input type="button" onclick="addAir()" value="提交">
+</body>
+</html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ 
+<configuration>
+	<!-- 读取数据库属性文件 -->
+ 	<properties resource="db.properties"/>
+
+	<!-- 全局设置 -->
+ 	<settings>
+ 		<!-- 配置日志实现,使用log4j日志 -->
+ 		<setting name="logImpl" value="LOG4J"/>
+ 		<!-- <setting name="autoMappingBehavior" value="FULL"/> -->
+    	<!-- 开启全局缓存配置 -->
+    	<setting name="cacheEnabled" value="true"/>
+ 	</settings>
+ 	
+	<!-- 配置别名 -->
+ 	<typeAliases>
+ 		<!-- 配置指定类型别名 -->
+ 		<!-- <typeAlias type="pojo.Student" alias="Student"/> -->
+ 		<!-- 通过扫描包,将指定包下的所有类配置别名,别名默认为类名 -->
+ 		<package name="pojo"/>
+ 	</typeAliases>
+ 	
+   <!--1、mybatis可以使用properties来引入外部properties配置文件的内容；
+      resource:引入类路径下的资源
+      url:引入网络路径或者磁盘路径下的资源
+   -->
+   <!-- <properties resource="dbconfig.properties"> </properties> -->
+	<!-- 和spring整合后environment将会废除 -->
+   <environments default="development"><!-- 通过default调用id来确定使用哪个连接 -->
+      <environment id="development">
+      	<!-- 使用JDBC事务 -->
+         <transactionManager type="JDBC" />
+         <!-- 数据库连接池 -->
+         <dataSource type="POOLED">
+            <property name="driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="url" value="jdbc:mysql://120.78.187.149:3306/username" />
+            <property name="username" value="root" />
+            <property name="password" value="yulei970423L" />
+         </dataSource>
+      </environment>
+      
+      
+      <!-- 通过数据库属性文件配置 -->
+ 		<environment id="test">
+ 			<!-- 配置事务管理 -->
+ 			<transactionManager type="JDBC"/>
+ 			<!-- 配置数据源,这里使用mybatis自带的 POOLED -->
+ 			<dataSource type="POOLED">
+ 				<property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+ 				<property name="url" value="${url1}"/>
+ 				<property name="username" value="${username1}"/>
+ 				<property name="password" value="${password1}"/>
+ 			</dataSource>
+ 		</environment>
+      
+   </environments>
+   <!-- 将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件（mybatis-config.xml）中 -->
+   
+   
+   
+   <mappers>
+      <mapper resource="sqlmap/Student.xml" />
+   </mappers>
+
+</configuration>
