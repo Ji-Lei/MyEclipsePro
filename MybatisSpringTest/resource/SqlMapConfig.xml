@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!-- 全局设置 -->
+ 	<settings>
+ 		<!-- 配置日志实现,使用log4j日志 -->
+ 		<setting name="logImpl" value="LOG4J"/>
+ 		<setting name="autoMappingBehavior" value="FULL"/>
+    	<!-- 开启全局缓存配置 -->
+    	<setting name="cacheEnabled" value="true"/>
+ 	</settings>
+ 	
+   <!-- 将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件（mybatis-config.xml）中 -->
+   <mappers>
+      <mapper resource="sqlmap/User.xml" />
+   </mappers>
+
+</configuration>
