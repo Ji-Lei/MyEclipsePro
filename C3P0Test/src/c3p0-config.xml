@@ -1,0 +1,34 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+
+<c3p0-config>
+    <default-config>
+
+       <!--MySQL数据库驱动程序-->
+        <property name="driverClass">com.mysql.cj.jdbc.Driver</property>
+
+       <!--MySQL数据库地址-->
+        <property name="jdbcUrl">jdbc:mysql://111.111.111.111:3306</property>
+
+       <!--MySQL数据库用户名-->
+        <property name="user">root</property>
+
+        <!--MySQL数据库密码-->
+        <property name="password">111111</property>
+        <!--初始化连接池的大小即池子里面有多少个数据库连接 -->
+        <property name="initialPoolSize">10</property>
+        <!-- 连接闲置的最长的时间 单位s 即30s后没有使用的话 杀掉 -->
+        <property name="maxIdleTime">30</property>
+        <!--连接池里面的最大连接数 -->
+        <property name="maxPoolSize">100</property>
+        <!-- 最小连接数 -->
+        <property name="minPoolSize">10</property>
+    </default-config>
+    <named-config name="dev">
+       <property name="jdbcUrl">jdbc:mysql://111.111.111.111:3306/111111</property>  
+    </named-config>
+    <named-config name="sss">
+       <property name="jdbcUrl">jdbc:mysql://111.111.111.111:3306/school</property>  
+    </named-config> 
+
+
+</c3p0-config>
