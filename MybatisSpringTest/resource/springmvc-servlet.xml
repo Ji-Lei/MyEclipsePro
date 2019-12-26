@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+              http://www.springframework.org/schema/beans/spring-beans.xsd
+              http://www.springframework.org/schema/mvc
+              http://www.springframework.org/schema/mvc/spring-mvc.xsd
+              http://www.springframework.org/schema/aop
+              http://www.springframework.org/schema/aop/spring-aop.xsd
+              http://www.springframework.org/schema/context
+              http://www.springframework.org/schema/context/spring-context-4.3.xsd
+              http://www.springframework.org/schema/tx
+              http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+    <!--配置处理映射器映射HandlerMapping-->
+    <!--<bean name="/index.html" class="IndexController" />
+    <bean name="/user.html" class="com.smbms.controller.UserController" />-->
+    <!--只需创建一个Controller,不用为单个请求创建bean-->
+    <mvc:annotation-driven />
+    <context:component-scan base-package="controller" />
+    <!-- 对静态资源放行 -->
+    <mvc:default-servlet-handler />
+    <mvc:resources location="/WEB-INF/html/js/" mapping="/js/**"/>
+    <!--读取编码信息文件-->
+    <bean id="freemarkerConfiguration"
+          class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location" value="classpath:freemarker.properties" />
+    </bean>
+    <!-- html视图解析器 必须先配置freemarkerConfig,注意html是没有prefix前缀属性的 -->
+    <bean id="freemarkerConfig"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="freemarkerSettings" ref="freemarkerConfiguration" />
+        <property name="templateLoaderPath" value="/WEB-INF/"/>
+    </bean>
+    <bean id="htmlviewResolver"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+        <property name="suffix" value=".html" />
+        <property name="order" value="0"></property>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+    </bean>
+    <!--配置视图解析器/WEB-INF/jsp/index.jsp，jsp视图技术的配置-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/" />
+        <property name="suffix" value=".jsp" />
+        <property name="order" value="2" />
+    </bean>
+</beans>
