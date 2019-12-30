@@ -18,14 +18,13 @@
               http://www.springframework.org/schema/tx
               http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
     <!--配置处理映射器映射HandlerMapping-->
-    <!--<bean name="/index.html" class="IndexController" />
-    <bean name="/user.html" class="com.smbms.controller.UserController" />-->
+    <!-- <bean name="/index.html" class="IndexController" />
+    <bean name="/user.html" class="controller.UsersController" /> -->
     <!--只需创建一个Controller,不用为单个请求创建bean-->
     <mvc:annotation-driven />
     <context:component-scan base-package="controller" />
     <!-- 对静态资源放行 -->
     <mvc:default-servlet-handler />
-    <mvc:resources location="/WEB-INF/html/js/" mapping="/js/**"/>
     <!--读取编码信息文件-->
     <bean id="freemarkerConfiguration"
           class="org.springframework.beans.factory.config.PropertiesFactoryBean">
